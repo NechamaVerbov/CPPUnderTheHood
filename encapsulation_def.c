@@ -1,8 +1,10 @@
 #include <stdio.h>
 #include "encapsulation_defs.h"
 
-/* Box def */
 
+static const char* message = "The total volume held on the shelf is";
+
+/* Box def */
 void _BoxpB(Box *const this)
 {
     this->width = 1;
@@ -94,4 +96,8 @@ void _printpS(const Shelf * const this)
     printf("%s %f\n", message, _getVolumepS(this));
 }
 
+void _setMessagepC(const char* msg)
+{
+    message = msg;
+}
 

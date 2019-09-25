@@ -3,7 +3,7 @@
 
 #define NUM_BOXES  3
 
-static const char* message = "The total volume held on the shelf is";
+/*static const char* message;*/
 
 typedef enum {false, true} bool;
 
@@ -47,6 +47,9 @@ void _setBoxpSipB(Shelf * const this, int index, const Box* dims);
 double _getVolumepS(const Shelf * const this);
 
 void _printpS(const Shelf * const this);
+
+void _setMessagepC(const char* msg);
+
 
 
 

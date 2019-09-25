@@ -9,7 +9,7 @@ static bool flagLargeBox = true;
 static bool flag99 = true;
 static bool flag88 = true;
 
-static void init_largeBox()
+void init_largeBox()
 {
     if(flagLargeBox)
     {
@@ -105,9 +105,9 @@ void doShelves()
     _setBoxpSipB(&aShelf, 0, &aBox);
 
     _printpS(&aShelf);
-     message = "This is the total volume on the shelf:";
+     _setMessagepC("This is the total volume on the shelf:");
     _printpS(&aShelf);
-     message = "Shelf's volume:";
+     _setMessagepC("Shelf's volume:");
     _printpS(&aShelf);
 
     _BoxpBddd(&temp1,2,4,6);
