@@ -5,39 +5,53 @@
 static const char* message = "The total volume held on the shelf is";
 
 /* Box def */
-void _BoxpB(Box *const this)
+void _BoxpBOX(Box *const this)
 {
     this->width = 1;
     this->height= 1;
     this->length = 1;
 
-    _printpB(this);
+    _printpBOX(this);
 }
 
-void _BoxpBd(Box *const this, double dim)
+void _BoxpBOXd(Box *const this, double dim)
 {
     this->width = dim;
     this->height= dim;
     this->length = dim;
 
-    _printpB(this);
+    _printpBOX(this);
 }
 
-void _BoxpBddd(Box *const this, double l, double w, double h)
+void _BoxpBOXddd(Box *const this, double l, double w, double h)
 {
     this->width = w;
     this->height= h;
     this->length = l;
 
-    _printpB(this);
+    _printpBOX(this);
 }
 
-void _d_BoxpB(Box *this)
+void _copy_BoxpBOXpBOX(Box* const this, const Box* const other)
+{
+    this->length = other->length;
+    this->height = other->height;
+    this->width = other->width;
+}
+
+void _assignpBOXpBOX(Box* const this, const Box* const other)
+{
+    this->length = other->length;
+    this->height = other->height;
+    this->width = other->width;
+}
+
+void _d_BoxpBOX(Box *this)
 {
     printf("Box destructor, %f x %f x %f\n", this->width, this->height, this->length);
 }
 
-Box* _multAssignpBd(Box *this, double mult)
+Box* _multAssignpBOXd(Box *this, double mult)
 {
     this->width *= mult;
     this->height *= mult;
@@ -46,42 +60,42 @@ Box* _multAssignpBd(Box *this, double mult)
     return this;
 }
 
-Box _multpBd(const Box *this, double mult)
+Box _multpBOXd(const Box *this, double mult)
 {
     Box ret = *this;
-    _multAssignpBd(&ret, mult);
+    _multAssignpBOXd(&ret, mult);
     return ret;
 
 }
 
-void _printpB(const Box * const this)
+void _printpBOX(const Box * const this)
 {
     printf("Box: %f x %f x %f\n", this->length, this->width, this->height);
 }
 
 /* Shelf def */
-void _ShelfpS(Shelf * const this)
+void _ShelfpSHELF(Shelf * const this)
 {
     int i;
     for (i = 0; i < NUM_BOXES; ++i) {
-        _BoxpB(&this->boxes[i]);
+        _BoxpBOXd(&this->boxes[i], 1);
     }
 }
 
-void _d_ShelfpS(Shelf * const this)
+void _d_ShelfpSHELF(Shelf * const this)
 {
     int i;
     for (i = NUM_BOXES - 1; i >= 0; --i) {
-        _d_BoxpB(&this->boxes[i]);
+        _d_BoxpBOX(&this->boxes[i]);
     }
 }
 
-void _setBoxpSipB(Shelf * const this, int index, const Box* dims)
+void _setBoxpSHELFipBOX(Shelf * const this, int index, const Box* dims)
 {
     this->boxes[index] = *dims;
 }
 
-double _getVolumepS(const Shelf * const this)
+double _getVolumepSHELF(const Shelf * const this)
 {
     double vol = 0;
     int i;
@@ -91,9 +105,9 @@ double _getVolumepS(const Shelf * const this)
     return vol;
 }
 
-void _printpS(const Shelf * const this)
+void _printpSHELF(const Shelf * const this)
 {
-    printf("%s %f\n", message, _getVolumepS(this));
+    printf("%s %f\n", message, _getVolumepSHELF(this));
 }
 
 void _setMessagepC(const char* msg)

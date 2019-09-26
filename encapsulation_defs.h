@@ -23,30 +23,37 @@ typedef struct {
 
 
 /* Box dec */
-void _BoxpB(Box *const this);
-void _BoxpBd(Box *const this, double dim);
-void _BoxpBddd(Box *const this, double l, double w, double h);
+void _BoxpBOXd(Box *const this, double dim);
 
-void _d_BoxpB(Box *this);
+void _BoxpBOXddd(Box *const this, double l, double w, double h);
 
-void _printpB(const Box * const this);
+void _copy_BoxpBOXpBOX(Box* const this, const Box* const other);
 
-Box* _multAssignpBd(Box *this, double mult);
+void _assignpBOXpBOX(Box* const this, const Box* const other);
 
-Box _multpBd(const Box *this, double mult);
+void _d_BoxpBOX(Box *this);
+
+void _printpBOX(const Box * const this);
+
+Box* _multAssignpBOXd(Box *this, double mult);
+
+Box _multpBOXd(const Box *this, double mult);
+
+//copy construcor
+//assignment operator
 
 
 
 /* Shelf defs */
-void _ShelfpS(Shelf * const this);
+void _ShelfpSHELF(Shelf * const this);
 
-void _d_ShelfpS(Shelf * const this);
+void _d_ShelfpSHELF(Shelf * const this);
 
-void _setBoxpSipB(Shelf * const this, int index, const Box* dims);
+void _setBoxpSHELFipBOX(Shelf * const this, int index, const Box* dims);
 
-double _getVolumepS(const Shelf * const this);
+double _getVolumepSHELF(const Shelf * const this);
 
-void _printpS(const Shelf * const this);
+void _printpSHELF(const Shelf * const this);
 
 void _setMessagepC(const char* msg);
 
