@@ -2,17 +2,7 @@
 #include "encapsulation_defs.h"
 
 
-static const char* message = "The total volume held on the shelf is";
-
-/* Box def */
-void _BoxpBOX(Box *const this)
-{
-    this->width = 1;
-    this->height= 1;
-    this->length = 1;
-
-    _printpBOX(this);
-}
+const char* message = "The total volume held on the shelf is";
 
 void _BoxpBOXd(Box *const this, double dim)
 {
@@ -30,20 +20,6 @@ void _BoxpBOXddd(Box *const this, double l, double w, double h)
     this->length = l;
 
     _printpBOX(this);
-}
-
-void _copy_BoxpBOXpBOX(Box* const this, const Box* const other)
-{
-    this->length = other->length;
-    this->height = other->height;
-    this->width = other->width;
-}
-
-void _assignpBOXpBOX(Box* const this, const Box* const other)
-{
-    this->length = other->length;
-    this->height = other->height;
-    this->width = other->width;
 }
 
 void _d_BoxpBOX(Box *this)
@@ -110,8 +86,9 @@ void _printpSHELF(const Shelf * const this)
     printf("%s %f\n", message, _getVolumepSHELF(this));
 }
 
+/*
 void _setMessagepC(const char* msg)
 {
     message = msg;
 }
-
+*/

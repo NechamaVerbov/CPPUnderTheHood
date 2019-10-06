@@ -3,7 +3,7 @@
 
 #define NUM_BOXES  3
 
-/*static const char* message;*/
+const char* message;
 
 typedef enum {false, true} bool;
 
@@ -22,14 +22,10 @@ typedef struct {
  * initials of argument types- p for pointer*/
 
 
-/* Box dec */
+/* Box defs */
 void _BoxpBOXd(Box *const this, double dim);
 
 void _BoxpBOXddd(Box *const this, double l, double w, double h);
-
-void _copy_BoxpBOXpBOX(Box* const this, const Box* const other);
-
-void _assignpBOXpBOX(Box* const this, const Box* const other);
 
 void _d_BoxpBOX(Box *this);
 
@@ -38,9 +34,6 @@ void _printpBOX(const Box * const this);
 Box* _multAssignpBOXd(Box *this, double mult);
 
 Box _multpBOXd(const Box *this, double mult);
-
-//copy construcor
-//assignment operator
 
 
 
