@@ -77,12 +77,8 @@ void _d_WeightBoxpWEIGHTBOX(WeightBox * const this)
     _d_BoxpBOX(&this->box);
 }
 
-const WeightBox* _assignpWEIGHTBOXdddd(WeightBox * const this, const WeightBox *other)
+WeightBox *const _assignpWEIGHTBOXdddd(WeightBox * const this, const WeightBox *other)
 {
-    this->box.length = 1;
-    this->box.width = 1;
-    this->box.height = 1;
-
     this->weight = other->weight;
 
     return this;

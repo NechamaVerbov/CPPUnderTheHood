@@ -14,7 +14,6 @@ typedef struct
 
 typedef struct
 {
-    Materials materials;
     Types material;
 
 } Material_t;
@@ -38,21 +37,24 @@ typedef struct
 
 /* PhysicalBox defs*/
 void _PhysicalBoxpPHYSICALBOXddd(PhysicalBox *const this, double l, double w, double h);
+
 void _PhysicalBoxpPHYSICALBOXdddTYPES(PhysicalBox *const this, double l, double w, double h, Types t);
+
 void _PhysicalBoxpPHYSICALBOXTYPES(PhysicalBox *const this, Types t);
 
 void d_PhysicalBoxpPHYSICALBOX(PhysicalBox *this);
 
 void _printppPHYSICALBOX(const PhysicalBox *const this);
 
-/* WeightBox defs*/
 
+/* WeightBox defs*/
 void _WeightBoxpWEIGHTBOXdddd(WeightBox * const this, double l, double w, double h, double wgt);
+
 void _copy_WeightBoxpWEIGHTBOX(WeightBox * const this, const WeightBox *other);
 
 void _d_WeightBoxpWEIGHTBOX(WeightBox * const this);
 
-const WeightBox* _assignpWEIGHTBOXdddd(WeightBox * const this, const WeightBox *other);
+WeightBox *const _assignpWEIGHTBOXdddd(WeightBox * const this, const WeightBox *other);
 
 void _printwpWEIGHTBOX(const WeightBox * const this);
 
