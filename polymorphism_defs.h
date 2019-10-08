@@ -2,26 +2,14 @@
 #define EX8__CFRONT_POLYMORPHISM_DEFS_H
 
 #define PrePostDollarFixer_DEFAULT_SYMBOL '$'
-#define postDollarFixer_DEFAULT_SYMBOL '#'
+#define PrePostHashFixer_DEFAULT_SYMBOL '#'
+#define PrePostFloatDollarFixer_DEFAULT_SYMBOL  '@'
 
 #include <stdio.h>
 
 int next_id;
 
 typedef void* (*ptrFuncVirtualTable[]) (void*, ...);
-
-//typedef ptrFuncVirtualTable virtualTable;
-
-
-extern ptrFuncVirtualTable textFormatterVirtualTable;
-
-extern ptrFuncVirtualTable defaultTextFormatterVirtualTable;
-
-extern ptrFuncVirtualTable PrePostFixerVirtualTable;
-
-extern ptrFuncVirtualTable PrePostDollarFixerVirtualTable;
-
-extern ptrFuncVirtualTable PrePostHashFixerVirtualTable;
 
 typedef struct
 {
@@ -35,9 +23,8 @@ typedef struct
     int id;
 
     struct Ider
-    {
-        // inline static int getId() { return next_id++; }
-    };
+    {};
+
 } DefaultTextFormatter;
 
 
@@ -61,21 +48,27 @@ typedef struct
     int precision;
 
 }  PrePostHashFixer;
-/*
+
 typedef struct
 {
     PrePostDollarFixer prePostDollarFixer;
-                protected:
-                static const char DEFAULT_SYMBOL = '@';
 
-                public:
-                PrePostFloatDollarFixer(const char* prefix, const char* postfix);
-                ~PrePostFloatDollarFixer();
-                void print(float num) const;
-                void print(float num, char symbol) const;
-                char getDefaultSymbol() const;
 } PrePostFloatDollarFixer;
-*/
+
+typedef struct
+{
+    PrePostFloatDollarFixer postFloatDollarFixer;
+
+}PrePostChecker;
+
+typedef struct
+{
+    DefaultTextFormatter defaultTextFormatter;
+    int times;
+
+}  Multiplier;
+
+
 
 /*TextFormatter defs*/
 void _d_TextFormatterpTextFormatter(TextFormatter * this);
@@ -83,15 +76,11 @@ void _d_TextFormatterpTextFormatter(TextFormatter * this);
 
 /*DefaultTextFormatter defs*/
 void _DefaultTextFormatterpDefaultTextFormatter(DefaultTextFormatter * const this);
-
 void _DefaultTextFormatterpDefaultTextFormatterpDefaultTextFormatter
                     (DefaultTextFormatter * const this, const DefaultTextFormatter *);
-
 DefaultTextFormatter *const _assignpDefaultTextFormatterpDefaultTextFormatter
                     (DefaultTextFormatter * const this, const DefaultTextFormatter* const);
-
 void _d_DefaultTextFormatterpDefaultTextFormatter(DefaultTextFormatter * this);
-
 void _printpDefaultTextFormatters(const DefaultTextFormatter * const this, const char* text);
 
 /* global defs*/
@@ -127,5 +116,31 @@ void _printpPrePostHashFixerlc(PrePostHashFixer * const this, long num, char sym
 char _getDefaultSymbolpPrePostHashFixer(const PrePostHashFixer * const this);
 void _printpPrePostHashFixeric(const PrePostHashFixer * const this, int num, char symbol);
 
+/*PrePostFloatDollarFixer defs*/
+void _PrePostFloatDollarFixerpPrePostFloatDollarFixerss(PrePostFloatDollarFixer *const this, const char* prefix, const char* postfix);
+void _d_PrePostFloatDollarFixerpPrePostFloatDollarFixer(PrePostFloatDollarFixer *);
+char _getDefaultSymbolpPrePostFloatDollarFixer(const PrePostFloatDollarFixer *const this);
+void _printpPrePostFloatDollarFixerf(const PrePostFloatDollarFixer *const this, float num);
+void printpPrePostFloatDollarFixerfc(const PrePostFloatDollarFixer *const this, float num, char symbol);
+
+/*PrePostChecker defs*/
+void _PrePostCheckerpPrePostChecker(PrePostChecker * const this);
+void _d_PrePostCheckerpPrePostChecker(PrePostChecker * this);
+void _printThisSymbolUsingFuncpPrePostChecker(const PrePostChecker * const this);
+void _printThisSymbolDirectlypPrePostChecker(const PrePostChecker * const this);
+void _printDollarSymbolByCastUsingFuncpPrePostChecker(const PrePostChecker * const this);
+void _printDollarSymbolByScopeUsingFuncpPrePostChecker(const PrePostChecker * const this);
+void _printDollarSymbolByCastDirectlypPrePostChecker(const PrePostChecker * const this);
+void _printDollarSymbolByScopeDirectlypPrePostChecker(const PrePostChecker * const this);
+
+
+/*Multiplier defs*/
+void _MultiplierpMultiplieri(Multiplier *const, int t);
+
+void _MultiplierpMultiplierpMultiplier(Multiplier *const, Multiplier *const);
+
+void _d_MultiplierpMultiplier(Multiplier *const);
+
+void _printpMultipliers(Multiplier *const this, const char* mes);
 
 #endif /*EX8__CFRONT_POLYMORPHISM_DEFS_H*/

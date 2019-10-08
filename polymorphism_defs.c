@@ -8,6 +8,9 @@ ptrFuncVirtualTable textFormatterVirtualTable = {_d_TextFormatterpTextFormatter}
 ptrFuncVirtualTable defaultTextFormatterVirtualTable = {_d_DefaultTextFormatterpDefaultTextFormatter,
                                                         _printpDefaultTextFormatters};
 
+ptrFuncVirtualTable MultiplierVirtualTable = {_d_MultiplierpMultiplier,
+                                              _printpMultipliers};
+
 ptrFuncVirtualTable PrePostFixerVirtualTable = {_d_PrePostFixerpPrePostFixer, _printpPrePostFixers,
                                                 _printpPrePostFixerlc, _getDefaultSymbolpPrePostFixer};
 
@@ -15,7 +18,15 @@ ptrFuncVirtualTable PrePostDollarFixerVirtualTable = {_d_PrePostDollarFixerpPreP
                                                _printpPrePostDollarFixerlc, _getDefaultSymbolpPrePostDollarFixer};
 
 ptrFuncVirtualTable PrePostHashFixerVirtualTable = {_d_PrePostHashFixerpPrePostHashFixer, _printpPrePostFixers,
-                                             (_printpPrePostHashFixerlc), _getDefaultSymbolpPrePostHashFixer};
+                                                    (_printpPrePostHashFixerlc), _getDefaultSymbolpPrePostHashFixer};
+
+ptrFuncVirtualTable PrePostFloatDollarFixerVirtualTable = {_d_PrePostFloatDollarFixerpPrePostFloatDollarFixer, _printpPrePostFixers,
+                                                      _printpPrePostDollarFixerlc, _getDefaultSymbolpPrePostFloatDollarFixer};
+
+ptrFuncVirtualTable PrePostCheckerVirtualTable = {_d_PrePostCheckerpPrePostChecker, _printpPrePostFixers,
+                                                           _printpPrePostDollarFixerlc, _getDefaultSymbolpPrePostFloatDollarFixer};
+
+
 
 void _d_TextFormatterpTextFormatter(TextFormatter * const this) {}
 
@@ -37,6 +48,7 @@ void _DefaultTextFormatterpDefaultTextFormatterpDefaultTextFormatter
     this->textFormatter.textFormatterVirtualTable = other->textFormatter.textFormatterVirtualTable;
     this->id = other->id;
 
+    this->textFormatter.textFormatterVirtualTable = defaultTextFormatterVirtualTable; // ???
     this->id = next_id++;
 
     printf("--- DefaultTextFormatter Copy CTOR, from id: %d\n########## C %d ##########\n", other->id, this->id);
@@ -72,9 +84,9 @@ DefaultTextFormatter* generateFormatterArray()
     _DefaultTextFormatterpDefaultTextFormatter(&dtf[0]);
     _DefaultTextFormatterpDefaultTextFormatter(&dtf[1]);
     _DefaultTextFormatterpDefaultTextFormatter(&dtf[2]);
-    return dtf;
-}*/
-
+    return &dtf;
+}
+*/
 
 void _PrePostFixerpPrePostFixerss(PrePostFixer * const this, const char* prefix, const char* postfix)
 {
@@ -141,6 +153,8 @@ void PrePostDollarFixerpPrePostDollarFixerpPrePostDollarFixer
     _DefaultTextFormatterpDefaultTextFormatterpDefaultTextFormatter
                  (&this->prePostFixer.defaultTextFormatter, &other->prePostFixer.defaultTextFormatter);
 
+    this->prePostFixer.defaultTextFormatter.textFormatter.textFormatterVirtualTable = PrePostDollarFixerVirtualTable;
+
     this->prePostFixer.pre = other->prePostFixer.pre;
     this->prePostFixer.post = other->prePostFixer.post;
 
@@ -174,14 +188,13 @@ void _printpPrePostDollarFixeric(const PrePostDollarFixer *const this, int num, 
     printf("%-60s | ", "[PrePostDollarFixer::print(int, char)]");
     printf("-->\n");
 
-    _printpPrePostDollarFixerlc(this, num, symbol);
-
+    ((*(this->prePostFixer.defaultTextFormatter.textFormatter.textFormatterVirtualTable))[2])(this, (long)num, symbol);
 }
 
 void _printpPrePostDollarFixerdc(const PrePostDollarFixer *const this, double num, char symbol)
 {
     printf("%-60s | ", "[PrePostDollarFixer::print(double, char)]");
-    printf("%s%c%f%s\n", this->prePostFixer.pre, symbol, num,this->prePostFixer.post);
+    printf("%s%c%f%s\n", this->prePostFixer.pre, symbol, num, this->prePostFixer.post);
 }
 
 void _PrePostHashFixerpPrePostHashFixeri(PrePostHashFixer * const this, int prc/* = 4*/)
@@ -198,7 +211,7 @@ void _PrePostHashFixerpPrePostHashFixeri(PrePostHashFixer * const this, int prc/
 
     printf("%-60s | ", "[PrePostHashFixer::print(double, char)]");
 
-    printf("%s[%c%.*f]%s\n", this->postDollarFixer.prePostFixer.pre, postDollarFixer_DEFAULT_SYMBOL,
+    printf("%s[%c%.*f]%s\n", this->postDollarFixer.prePostFixer.pre, PrePostHashFixer_DEFAULT_SYMBOL,
             this->precision, 9999.9999, this->postDollarFixer.prePostFixer.post);
 
 }
@@ -227,7 +240,7 @@ void _printpPrePostHashFixerlc(PrePostHashFixer * const this, long num, char sym
 
 char _getDefaultSymbolpPrePostHashFixer(const PrePostHashFixer * const this)
 {
-    return postDollarFixer_DEFAULT_SYMBOL;
+    return PrePostHashFixer_DEFAULT_SYMBOL;
 }
 
 void _printpPrePostHashFixeric(const PrePostHashFixer * const this, int num, char symbol)
@@ -237,5 +250,156 @@ void _printpPrePostHashFixeric(const PrePostHashFixer * const this, int num, cha
 
     printf("%-60s | ", "[PrePostHashFixer::print(double, char)]");
 
-    printf("%s[%c%.*f]%s\n", this->postDollarFixer.prePostFixer.pre, symbol, this->precision, num, this->postDollarFixer.prePostFixer.post);
+    printf("%s[%c%.*f]%s\n", this->postDollarFixer.prePostFixer.pre, symbol, this->precision, (float)num, this->postDollarFixer.prePostFixer.post);
+}
+
+void _PrePostFloatDollarFixerpPrePostFloatDollarFixerss(PrePostFloatDollarFixer *const this, const char* prefix, const char* postfix)
+{
+    PrePostDollarFixerpPrePostDollarFixerss(&this->prePostDollarFixer, prefix, postfix);
+
+    this->prePostDollarFixer.prePostFixer.defaultTextFormatter.textFormatter.textFormatterVirtualTable = PrePostFloatDollarFixerVirtualTable;
+
+    printf("--- PrePostFloatDollarFixer CTOR: \"%s\"...\"%s\"\n",
+            this->prePostDollarFixer.prePostFixer.pre,  this->prePostDollarFixer.prePostFixer.post);
+}
+
+void _d_PrePostFloatDollarFixerpPrePostFloatDollarFixer(PrePostFloatDollarFixer * this)
+{
+    printf("--- PrePostFloatDollarFixer DTOR: \"%s\"...\"%s\"\n",
+            this->prePostDollarFixer.prePostFixer.pre,  this->prePostDollarFixer.prePostFixer.post);
+
+    this->prePostDollarFixer.prePostFixer.defaultTextFormatter.textFormatter.textFormatterVirtualTable = PrePostDollarFixerVirtualTable;
+
+    _d_PrePostDollarFixerpPrePostDollarFixer(&this->prePostDollarFixer);
+}
+
+char _getDefaultSymbolpPrePostFloatDollarFixer(const PrePostFloatDollarFixer *const this)
+{
+    return PrePostFloatDollarFixer_DEFAULT_SYMBOL;
+}
+
+void _printpPrePostFloatDollarFixerf(const PrePostFloatDollarFixer *const this, float num)
+{
+    printf("%-60s | ", "[PrePostFloatDollarFixer::print(float)]");
+    printf("-->\n");
+
+    printpPrePostFloatDollarFixerfc(this, num, PrePostFloatDollarFixer_DEFAULT_SYMBOL);
+}
+
+void printpPrePostFloatDollarFixerfc(const PrePostFloatDollarFixer *const this, float num, char symbol)
+{
+
+    printf("%-60s | ", "[PrePostFloatDollarFixer::print(float, char)]");
+
+    printf("%s%c%.2f%s\n",
+            this->prePostDollarFixer.prePostFixer.pre, symbol, num, this->prePostDollarFixer.prePostFixer.post);
+
+}
+
+void _PrePostCheckerpPrePostChecker(PrePostChecker * const this)
+{
+    _PrePostFloatDollarFixerpPrePostFloatDollarFixerss(&this->postFloatDollarFixer, "[[[[ ", " ]]]]");
+
+    this->postFloatDollarFixer.prePostDollarFixer.prePostFixer.defaultTextFormatter.textFormatter.textFormatterVirtualTable
+                = PrePostCheckerVirtualTable;
+
+    printf("--- PrePostChecker CTOR: \"%s\"...\"%s\"\n", "[[[[ ", " ]]]]");
+}
+void _d_PrePostCheckerpPrePostChecker(PrePostChecker * this)
+{
+    printf("--- PrePostChecker CTOR: \"%s\"...\"%s\"\n",
+            this->postFloatDollarFixer.prePostDollarFixer.prePostFixer.pre,
+            this->postFloatDollarFixer.prePostDollarFixer.prePostFixer.post);
+
+    this->postFloatDollarFixer.prePostDollarFixer.prePostFixer.defaultTextFormatter.textFormatter.textFormatterVirtualTable
+            = PrePostFloatDollarFixerVirtualTable;
+
+    _d_PrePostFloatDollarFixerpPrePostFloatDollarFixer(&this->postFloatDollarFixer);
+}
+
+void _printThisSymbolUsingFuncpPrePostChecker(const PrePostChecker * const this)
+{
+    printf("%-60s | ", "[PrePostChecker::printThisSymbolUsingFunc()]");
+
+    printf("Default symbol is %c\n", (*(this->postFloatDollarFixer.prePostDollarFixer
+    .prePostFixer.defaultTextFormatter.textFormatter.textFormatterVirtualTable))[3](&this));
+}
+
+void _printThisSymbolDirectlypPrePostChecker(const PrePostChecker * const this)
+{
+    printf("%-60s | ", "[PrePostChecker::printThisSymbolDirectly()]");
+
+    printf("Default symbol is %c\n", (*(this->postFloatDollarFixer.prePostDollarFixer
+            .prePostFixer.defaultTextFormatter.textFormatter.textFormatterVirtualTable))[3](&this));
+}
+
+void _printDollarSymbolByCastUsingFuncpPrePostChecker(const PrePostChecker * const this)
+{
+    printf("%-60s | ", "[PrePostChecker::printDollarSymbolByCastUsingFunc()]");
+
+
+    printf("Default symbol is %c\n", (*(this->postFloatDollarFixer.prePostDollarFixer
+            .prePostFixer.defaultTextFormatter.textFormatter.textFormatterVirtualTable))[3]((PrePostDollarFixer*)(this)));
+}
+
+void _printDollarSymbolByScopeUsingFuncpPrePostChecker(const PrePostChecker * const this)
+{
+    printf("%-60s | ", "[PrePostChecker::printDollarSymbolByScopeUsingFunc()]");
+
+    printf("Default symbol is %c\n", _getDefaultSymbolpPrePostDollarFixer(&this->postFloatDollarFixer));
+
+}
+
+void _printDollarSymbolByCastDirectlypPrePostChecker(const PrePostChecker * const this)
+{
+    printf("%-60s | ", "[PrePostChecker::printDollarSymbolByCastDirectly()]");
+
+    printf("Default symbol is %c\n", PrePostDollarFixer_DEFAULT_SYMBOL);
+
+}
+
+void _printDollarSymbolByScopeDirectlypPrePostChecker(const PrePostChecker * const this)
+{
+    printf("%-60s | ", "[PrePostChecker::printDollarSymbolByScopeDirectly()]");
+
+    printf("Default symbol is %c\n", PrePostDollarFixer_DEFAULT_SYMBOL);
+
+}
+
+void _MultiplierpMultiplieri(Multiplier *const this, int t)
+{
+    _DefaultTextFormatterpDefaultTextFormatter(&this->defaultTextFormatter);
+
+    this->defaultTextFormatter.textFormatter.textFormatterVirtualTable = MultiplierVirtualTable;
+
+    this->times = t;
+
+    printf("--- Multiplier CTOR: times = %d\n", this->times);
+}
+
+void _MultiplierpMultiplierpMultiplier(Multiplier *const this, Multiplier *const that)
+{
+    _DefaultTextFormatterpDefaultTextFormatterpDefaultTextFormatter(this, that);
+    this->defaultTextFormatter.textFormatter.textFormatterVirtualTable = defaultTextFormatterVirtualTable;
+
+    this->times = that->times;
+}
+
+void _d_MultiplierpMultiplier(Multiplier *const this)
+{
+    printf("--- Multiplier DTOR: times = %d\n", this->times);
+
+    this->defaultTextFormatter.textFormatter.textFormatterVirtualTable = defaultTextFormatterVirtualTable;
+
+    _d_DefaultTextFormatterpDefaultTextFormatter(&this->defaultTextFormatter);
+}
+
+void _printpMultipliers(Multiplier *const this, const char* text)
+{
+    int i;
+    printf("%-60s | ", "[Multiplier::print(const char*)]");
+
+    for (i = 0; i < this->times; ++i)
+        printf("%s", text);
+    printf("\n");
 }
