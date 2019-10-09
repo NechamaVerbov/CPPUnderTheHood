@@ -1,5 +1,6 @@
 #include "polymorphism_defs.h"
 
+
 next_id = 0;
 
 
@@ -77,16 +78,13 @@ void _printpDefaultTextFormatters(const DefaultTextFormatter * const this, const
     printf("%-60s | ", "[DefaultTextFormatter::print(const char*)]");
     printf("%s\n", text);
 }
-/*
+
 DefaultTextFormatter* generateFormatterArray()
 {
-    DefaultTextFormatter dtf[3];
-    _DefaultTextFormatterpDefaultTextFormatter(&dtf[0]);
-    _DefaultTextFormatterpDefaultTextFormatter(&dtf[1]);
-    _DefaultTextFormatterpDefaultTextFormatter(&dtf[2]);
-    return &dtf;
+    DefaultTextFormatter* dtf = malloc(sizeof(DefaultTextFormatter) * 3);
+    return dtf;
 }
-*/
+
 
 void _PrePostFixerpPrePostFixerss(PrePostFixer * const this, const char* prefix, const char* postfix)
 {

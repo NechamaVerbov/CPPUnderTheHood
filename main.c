@@ -208,32 +208,45 @@ void doFormatterPtrs()
 
     printf("\n--- end doFormatterPtrs() ---\n\n");
 }
-/*
+
 void doFormatterDynamicArray()
 {
     int i;
+    DefaultTextFormatter p1;
+    DefaultTextFormatter p2;
+    DefaultTextFormatter p3;
 
     printf("\n--- start doFormatterDynamicArray() ---\n\n");
 
-    DefaultTextFormatter* formatters = generateFormatterArray();  // smart pointer
+    DefaultTextFormatter *formatters = generateFormatterArray();
 
-    for (i = 0; i < 3; ++i)
-        _printpDefaultTextFormatters(&formatters[i], "Hello World!");
+    _DefaultTextFormatterpDefaultTextFormatter(&p1);
+    _DefaultTextFormatterpDefaultTextFormatter(&p2);
+    _DefaultTextFormatterpDefaultTextFormatter(&p3);
 
-    for (i = 2; i >= 0; --i)
-        _d_DefaultTextFormatterpDefaultTextFormatter(&formatters[i]);
+    *formatters = p1;
+    *(formatters + sizeof(DefaultTextFormatter)) = p2;
+    *(formatters + (sizeof(DefaultTextFormatter) * 2)) = p3;
 
+
+    for (i = 0; i < sizeof(DefaultTextFormatter) * 3; i+= sizeof(DefaultTextFormatter))
+        _printpDefaultTextFormatters(&(*(formatters + i)), "Hello World!");
+
+    for (i = (sizeof(DefaultTextFormatter) * 2); i >= 0; i-= sizeof(DefaultTextFormatter))
+        _d_DefaultTextFormatterpDefaultTextFormatter(&(*(formatters + i)));
+
+    free(formatters);
     printf("\n--- start doFormatterDynamicArray() ---\n\n");
-}*/
+}
 
 int main()
 {
     printf("\n--- Start main() ---\n\n");
 
     doPrePostFixer();
-     doPrePostDollarFixer();
-      doPrePostFloatDollarFixer();
-     doPrePostChecker();
+    doPrePostDollarFixer();
+    doPrePostFloatDollarFixer();
+    doPrePostChecker();
 
     PrePostHashFixer hfix;
     _PrePostHashFixerpPrePostHashFixeri(&hfix, 4);
@@ -251,7 +264,7 @@ int main()
 
     doFormatterArray();
    doFormatterPtrs();
-    //doFormatterDynamicArray();
+    doFormatterDynamicArray();
 
     printf("\n--- End main() ---\n\n");
 

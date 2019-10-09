@@ -6,6 +6,7 @@
 #define PrePostFloatDollarFixer_DEFAULT_SYMBOL  '@'
 
 #include <stdio.h>
+#include <stdlib.h>
 
 int next_id;
 
@@ -72,7 +73,6 @@ typedef struct
 
 /*TextFormatter defs*/
 void _d_TextFormatterpTextFormatter(TextFormatter * this);
-
 
 /*DefaultTextFormatter defs*/
 void _DefaultTextFormatterpDefaultTextFormatter(DefaultTextFormatter * const this);
