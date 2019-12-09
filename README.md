@@ -1,5 +1,5 @@
 # CPPUnderTheHood
-Implementing the part of the C++ compiler that C doesn't have
+Implementing the part of the C++ compiler that C doesn't have.
 
 
 Implement 'CFront' in three stages:
